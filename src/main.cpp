@@ -44,6 +44,7 @@ const char CONFIRMLED = '*';
 int compteur = 0;
 int  intensiteled;
 int ledpin = 17 ;
+int valeurIntensite;
 
 void readKp4x4();
 
@@ -62,11 +63,11 @@ void loop() {
   
 
 
- char intensite = kp4x4.getKey();
+ char val = kp4x4.getKey();
 
 
- if (intensite) {
-         Serial.println(intensite);
+ if (val) {
+         Serial.println(val);
          compteur = compteur+1;
          Serial.println(compteur);
     }
@@ -74,19 +75,19 @@ void loop() {
    switch (compteur)
     {
        case 1: // selection de la LED
-              if (intensite == REDLED)
+              if (val == REDLED)
               {
                  ledpin = 0;
                 
-              }else if (intensite == GREENLED)
+              }else if (val == GREENLED)
               {
                  ledpin = 10;
                 
-              }else if (intensite == BLUELED)
+              }else if (val == BLUELED)
               {
                  ledpin = 8 ;
                
-              }else if (intensite == YELLOWLED)
+              }else if (val == YELLOWLED)
               {
                  ledpin = 1;
                 
@@ -98,43 +99,46 @@ void loop() {
 
         break;
         case 2: // confirmation deu choix de la LED
-               if (intensite == CONFIRMLED )
+               if (val == CONFIRMLED )
               {
                  Serial.println("led selectionné");
               } 
              
         break;
       case 3:   // entree de l'intensite de la LED
-
-               intensiteled = intensite - '0';
-                
-              intensiteled = map(intensiteled, 0, 9, 0, 255 );
+                if (val == '0'|| val == '1'||val == '2'||val == '3'||val == '4'||val == '5'||val == '6'||val == '7'||val == '8'||val == '9'  )
+              {
+                valeurIntensite = val - '0' ;
+               intensiteled = val - '0'; 
+               intensiteled = map(intensiteled, 0, 9, 0, 255 );
+              } 
+              
               
         
         break;
       case 4: // confirmation de l'intenite , actionnement de la LED et envois sur le serveur THingsboards
-              if (intensite == CONFIRMINTENSITE )
+              if (val == CONFIRMINTENSITE )
                   {
                         Serial.println(" intensité selectionné");
                         pinMode(ledpin,OUTPUT);
                         analogWrite(ledpin,intensiteled);
 
-                                                      if (ledpin == 0)
+                                      if (ledpin == 0)
                                   {
-                                    appendPayload("redLED", intensiteled); 
+                                    appendPayload("redLED", valeurIntensite); 
                                     sendPayload(); 
                                   }
                                   else if (ledpin == 10)
                                   {
-                                  appendPayload("greenLED", intensiteled);
+                                  appendPayload("greenLED", valeurIntensite);
                                   sendPayload(); 
                                   } else if (ledpin == 8)
                                   {
-                                  appendPayload("blueLED", intensiteled);  
+                                  appendPayload("blueLED", valeurIntensite);  
                                     sendPayload();
                                   } else if (ledpin == 1)
                                   {
-                                    appendPayload("yellowLED", intensiteled);  
+                                    appendPayload("yellowLED", valeurIntensite);  
                                     sendPayload();
                                   }
                                   else
@@ -154,3 +158,12 @@ void loop() {
 }
 
 }
+  
+
+
+
+
+
+    
+
+ 
