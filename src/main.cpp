@@ -148,10 +148,26 @@ void loop() {
                        
                   } 
       break;
-      default: 
-      delay(500);
-   
 
+      case 5:
+               if (val)
+               { 
+                  if (val == '0')
+                  {
+                    analogWrite(ledpin,0);
+                    compteur = 0 ;
+                    Serial.println(" Vous pouvez effectuer de nouveau l'operation");
+                  }
+                  
+                 
+               }
+               
+            
+      break;
+      default: 
+      
+        delay(500);
+      break;
    
    
       
@@ -159,6 +175,13 @@ void loop() {
 
 }
   
+
+
+
+
+    
+
+ 
 
 
 
